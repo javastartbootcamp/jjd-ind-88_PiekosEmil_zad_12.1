@@ -1,10 +1,13 @@
+import org.assertj.core.api.Condition;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
 
+import static org.assertj.core.api.Assertions.anyOf;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.contains;
 
 public class MainTest {
 
@@ -21,7 +24,10 @@ public class MainTest {
         Main.main(new String[]{});
 
         // then
-        assertThat(outContent.toString()).contains("1.0 + 2.0 = 3.0");
+        assertThat(outContent.toString()).satisfiesAnyOf(
+                content -> assertThat(content).contains("1.0 + 2.0 = 3.0"),
+                content -> assertThat(content).contains("1 + 2 = 3")
+        );
     }
 
     @Test
@@ -34,20 +40,39 @@ public class MainTest {
         Main.main(new String[]{});
 
         // then
-        assertThat(outContent.toString()).contains("2.0 * 3.0 = 6.0");
+        assertThat(outContent.toString()).satisfiesAnyOf(
+                content -> assertThat(content).contains("2.0 * 3.0 = 6.0"),
+                content -> assertThat(content).contains("2 * 3 = 6")
+        );
     }
 
     @Test
     void shouldWorkForDivision() throws IOException {
         // given
-        String fileContent = "10 / 2";
+        String fileContent = "11 / 2";
         writeToInputFile(fileContent);
 
         // when
         Main.main(new String[]{});
 
         // then
-        assertThat(outContent.toString()).contains("10.0 / 2.0 = 5.0");
+        assertThat(outContent.toString()).satisfiesAnyOf(
+                content -> assertThat(content).contains("11.0 / 2.0 = 5.5"),
+                content -> assertThat(content).contains("11 / 2 = 5.5")
+        );
+    }
+
+    @Test
+    void shouldWorkForDoubles() throws IOException {
+        // given
+        String fileContent = "5.5 + 12.1";
+        writeToInputFile(fileContent);
+
+        // when
+        Main.main(new String[]{});
+
+        // then
+        assertThat(outContent.toString()).contains("5.5 + 12.1 = 17.6");
     }
 
     @Test
@@ -60,7 +85,10 @@ public class MainTest {
         Main.main(new String[]{});
 
         // then
-        assertThat(outContent.toString()).contains("10.0 - 2.0 = 8.0");
+        assertThat(outContent.toString()).satisfiesAnyOf(
+                content -> assertThat(content).contains("10.0 - 2.0 = 8.0"),
+                content -> assertThat(content).contains("10 - 2 = 8")
+        );
     }
 
     private void writeToInputFile(String fileContent) throws IOException {
