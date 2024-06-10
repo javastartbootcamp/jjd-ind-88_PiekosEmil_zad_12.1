@@ -2,6 +2,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Locale;
 import java.util.Scanner;
 
 class Main {
@@ -10,7 +11,7 @@ class Main {
         String fileOutput = "results.txt";
         File inputFile = new File(fileInput);
         File outputFile = new File(fileOutput);
-        Scanner scan = new Scanner(inputFile);
+        Scanner scan = new Scanner(inputFile).useLocale(Locale.US);
         double number1 = 0;
         String operator = null;
         double number2 = 0;
