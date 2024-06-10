@@ -21,10 +21,11 @@ public class InOutApp {
 
     protected static void writeResult(File file, double number1, String operator, double number2, double result) {
         try {
-            fileWriter = new FileWriter(file, false);
+            fileWriter = new FileWriter(file, true);
             writer = new BufferedWriter(fileWriter);
             writer.write(number1 + " " + operator + " " + number2 + " = " + result);
             writer.write(System.lineSeparator());
+            writer.flush();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

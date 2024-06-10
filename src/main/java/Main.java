@@ -24,7 +24,7 @@ class Main {
             InOutApp.printResult(number1, operator, number2, result);
             InOutApp.writeResult(outputFile, number1, operator, number2, result);
         }
-        InOutApp.writerCloser();
+//        InOutApp.writerCloser();
         scan.close();
     }
 }
