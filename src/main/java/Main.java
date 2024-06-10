@@ -2,30 +2,34 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.Scanner;
 
 class Main {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         String fileInput = "operations.txt";
         String fileOutput = "results.txt";
         File inputFile = new File(fileInput);
         File outputFile = new File(fileOutput);
-        Scanner scan = new Scanner(inputFile).useLocale(Locale.US);
-        double number1 = 0;
-        String operator = null;
-        double number2 = 0;
-        double result = 0;
+        String operator;
+        double number2;
+        double number1;
+        double result;
 
-        while (scan.hasNextDouble() | scan.hasNextLine()) {
-            number1 = scan.nextDouble();
-            operator = scan.next();
-            number2 = scan.nextDouble();
-            result = InOutApp.getResult(operator, number1, number2);
-            InOutApp.printResult(number1, operator, number2, result);
-            InOutApp.writeResult(outputFile, number1, operator, number2, result);
+        try (
+                Scanner scan = new Scanner(inputFile).useLocale(Locale.US);
+        ) {
+            while (scan.hasNextLine()) {
+                number1 = scan.nextDouble();
+                operator = scan.next();
+                number2 = scan.nextDouble();
+                result = InOutApp.getResult(operator, number1, number2);
+                InOutApp.printResult(number1, operator, number2, result);
+                InOutApp.writeResult(outputFile, number1, operator, number2, result);
+            }
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
         }
-//        InOutApp.writerCloser();
-        scan.close();
     }
 }

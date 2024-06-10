@@ -4,8 +4,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class InOutApp {
-    static FileWriter fileWriter;
-    static BufferedWriter writer;
 
     protected static double getResult(String operator, double number1, double number2) {
         double result;
@@ -20,19 +18,15 @@ public class InOutApp {
     }
 
     protected static void writeResult(File file, double number1, String operator, double number2, double result) {
-        try {
-            fileWriter = new FileWriter(file, true);
-            writer = new BufferedWriter(fileWriter);
+        try (
+                FileWriter fileWriter = new FileWriter(file, true);
+                BufferedWriter writer = new BufferedWriter(fileWriter);
+        ) {
             writer.write(number1 + " " + operator + " " + number2 + " = " + result);
-            writer.write(System.lineSeparator());
-            writer.flush();
+            writer.newLine();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    protected static void writerCloser() throws IOException {
-        writer.close();
     }
 
     protected static void printResult(double number1, String operator, double number2, double result) {
